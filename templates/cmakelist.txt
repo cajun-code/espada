@@ -1,0 +1,40 @@
+
+cmake_minimum_required(VERSION 3.16)
+project({{name}})
+
+set(CMAKE_CXX_STANDARD 14)
+
+{{#use_conan}}
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+{{/use_conan}}
+{{#src_files}}
+set(SRC_FILES 
+    {{{.}}}
+)
+{{/src_files}}
+
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC {{include_dir}})
+{{#use_conan}}
+target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
+{{/use_conan}}
+
+{{#include_test}}
+{{#testing_framework_catch}}
+set(TEST_APP_NAME ${PROJECT_NAME}_test)
+{{#test_files}}
+set(TEST_SRC
+{{.}}
+)
+{{/test_files}} 
+list(REMOVE_ITEM SRC_FILES src/main.cpp)
+add_executable(${TEST_APP_NAME} TEST_SRC SRC_FILES {{test_dir}}/{{test_src_dir}}/test_main.cpp)
+target_include_directories(${TEST_APP_NAME} PUBLIC {{test_dir}}/{{test_include_dir}})
+{{#use_conan}}
+target_link_libraries(${TEST_APP_NAME} ${CONAN_LIBS})
+{{/use_conan}}
+
+{{/testing_framework_catch}}
+{{/include_test}}
