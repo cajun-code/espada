@@ -1,4 +1,7 @@
-// {{f_name}}_tests.{{ext}} create by {{user_name}} on {{date_time}}
+// {{f_name}}.test.{{ext}} created by {{user_created}} on {{date_created}}
+#ifndef CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
+#define CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS
+#endif
 #include "catch.hpp"
 #include "fakeit.hpp"
 #include <{{f_name}}.h>

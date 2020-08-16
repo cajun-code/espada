@@ -31,6 +31,11 @@ class ProjectCommand extends Command with TemplateHelpers{
 
   @override
   void run() async {
+    print(argResults.rest);
+    if(argResults['name'] == null ){
+      print('Name is a required field');
+      return;
+    } 
     Project project = Project(
       name: argResults['name'],
       use_conan: argResults['use-conan'],
@@ -64,7 +69,7 @@ class ProjectCommand extends Command with TemplateHelpers{
     if(project.use_conan) {
       createFileFromTemplate(project, '${project.name.snakeCase}/conanfile.txt' , 'conanfile.txt');
     }
-    createFileFromTemplate(project,'${project.name.snakeCase}/CMakeList.txt', 'cmakelist.txt');
+    createFileFromTemplate(project,'${project.name.snakeCase}/CMakeLists.txt', 'cmakelist.txt');
   }
 
   Future createTestProjects(Project project) async {
