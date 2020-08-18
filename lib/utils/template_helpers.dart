@@ -11,6 +11,28 @@ mixin TemplateHelpers {
     _expandParams(params, project);
     createFromTemplate(params, file_name, template_name);
   }
+  void createFileFromWebTemplate(Project project, String file_name, String template_name) async{
+    var params = project.toJson();
+    _expandParams(params, project);
+    createFromWebTemplate(params, file_name, template_name);
+  }
+
+  void deleteFileFromProject(Project project, String file_name) async{
+    var file = File(file_name); 
+    if(await file.exists()){
+      file.deleteSync();
+    }
+    print('Deleting File: $file_name');
+   if(project.header_files.contains(file_name)){
+      project.header_files.remove(file_name);
+    } 
+    if(project.src_files.contains(file_name)){
+      project.src_files.remove(file_name);
+    } 
+    if(project.test_files.contains(file_name)){
+      project.test_files.remove(file_name);
+    } 
+  }
 
   void createFileFromURL(Project project, String file, String url ){
     http.get(url).then((response) {
@@ -22,10 +44,20 @@ mixin TemplateHelpers {
 
 void createFromTemplate(Map<String, dynamic> params, String file_name, String template_name) async{
   var template_path = join(dirname(Platform.script.path), '..', 'templates', template_name);
+  print('Creating ${file_name}');
+  var templateFile = await File(template_path);
+  var template = Template(templateFile.readAsStringSync());
+  await File(file_name).writeAsStringSync(template.renderString(params));
+}
+
+// https://raw.githubusercontent.com/cajun-code/espada/master/templates/
+void createFromWebTemplate(Map<String, dynamic> params, String file_name, String template_name) async{
+  var url = 'https://raw.githubusercontent.com/cajun-code/espada/master/templates/${template_name}';
+  http.get(url).then((response) async{
     print('Creating ${file_name}');
-    var templateFile = await File(template_path);
-    var template = Template(templateFile.readAsStringSync());
+    var template = Template(response.body);
     await File(file_name).writeAsStringSync(template.renderString(params));
+  });
 }
 
 void _expandParams(Map<String, dynamic> params, Project project) {

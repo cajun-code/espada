@@ -1,20 +1,17 @@
+import 'dart:io';
 import 'package:args/command_runner.dart';
-import 'package:espada/models/project.dart';
 import 'package:espada/utils/exceptions.dart';
 import 'package:espada/utils/project_helpers.dart';
 import 'package:espada/utils/template_helpers.dart';
-import 'package:recase/recase.dart';
-import 'dart:io';
-import 'dart:convert';
 
-class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers{
+class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
   @override
-  String get description => 'Create class files and include in project';
+  String get description => 'Create a header file ';
 
   @override
-  String get name => 'class';
+  String get name => 'header';
 
-  ClassCommand(){
+  HeaderCommand(){
     argParser.addOption('name',abbr: 'n', help: 'Name of the class to create');
     argParser.addFlag('delete', abbr: 'd', help: 'Delete files created by this gnerator', defaultsTo: false);
   }
@@ -50,29 +47,10 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers{
       if(argResults['delete']){
         await deleteFileFromProject(project, header_path);
       }else{
-        await createFromWebTemplate(params, header_path, 'class_header.h');
+        await createFromWebTemplate(params, header_path, 'file_header.h');
         project.header_files.add(header_path);
       }
-      // create cpp file
-      params['ext'] = 'cpp';
-      var src_path = '${project.src_dir}/${params['f_name']}.${params['ext']}';
-      if(argResults['delete']){
-        await deleteFileFromProject(project, src_path);
-      }else{
-        await createFromWebTemplate(params, src_path, 'class_body.cpp');
-        project.src_files.add(src_path);
-      }
-      // create test file
-      if(project.include_test && project.testing_framework == 'catch'){
-        var test_path = '${project.test_dir}/${project.test_src_dir}/${params['f_name']}.test.${params['ext']}';
-        if(argResults['delete']){
-          await deleteFileFromProject(project, test_path);
-        }else{
-          await createFromWebTemplate(params, test_path, 'catch_test_case.cpp');
-          project.test_files.add(test_path);
-        }
-      }
-      // save project file
+        // save project file
       await saveProject();
       // regenerate cmake
       createFileFromTemplate(project,'CMakeLists.txt', 'cmakelist.txt');
@@ -83,5 +61,4 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers{
     }
     
   }
-
 }

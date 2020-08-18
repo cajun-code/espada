@@ -31,13 +31,18 @@ class ProjectCommand extends Command with TemplateHelpers{
 
   @override
   void run() async {
-    print(argResults.rest);
-    if(argResults['name'] == null ){
-      print('Name is a required field');
-      return;
-    } 
+    //print(argResults.rest);
+    String name = argResults['name'];
+    if (name == null){
+      if(argResults.rest.length > 0){
+        name = argResults.rest[0];
+      }else{
+        print('Name is a required field');
+        return;
+      }
+    }
     Project project = Project(
-      name: argResults['name'],
+      name: name.pascalCase,
       use_conan: argResults['use-conan'],
       include_dir: argResults['include-dir'],
       src_dir: argResults['src-dir'],
@@ -55,11 +60,11 @@ class ProjectCommand extends Command with TemplateHelpers{
     var proj_dir = await Directory(project.name.snakeCase).create(recursive: true);
     // create include folder
     var include_dir = await Directory("${project.name.snakeCase}/${project.include_dir}").create(recursive: true);
-    createFileFromTemplate(project,'${project.name.snakeCase}/${project.include_dir}/.gitkeep', 'gitkeep');
+    createFileFromWebTemplate(project,'${project.name.snakeCase}/${project.include_dir}/.gitkeep', 'gitkeep');
     // create src folder
     var src_dir = await Directory("${project.name.snakeCase}/${project.src_dir}").create(recursive: true);
     // create main.cpp
-    createFileFromTemplate(project,'${project.name.snakeCase}/${project.src_dir}/main.cpp', 'main.cpp');
+    createFileFromWebTemplate(project,'${project.name.snakeCase}/${project.src_dir}/main.cpp', 'main.cpp');
     project.src_files.add('${project.src_dir}/main.cpp');
     await createTestProjects(project);
     // create espada file
@@ -67,9 +72,9 @@ class ProjectCommand extends Command with TemplateHelpers{
     print('Creating espada project file ');
     // create cmake file
     if(project.use_conan) {
-      createFileFromTemplate(project, '${project.name.snakeCase}/conanfile.txt' , 'conanfile.txt');
+      createFileFromWebTemplate(project, '${project.name.snakeCase}/conanfile.txt' , 'conanfile.txt');
     }
-    createFileFromTemplate(project,'${project.name.snakeCase}/CMakeLists.txt', 'cmakelist.txt');
+    createFileFromWebTemplate(project,'${project.name.snakeCase}/CMakeLists.txt', 'cmakelist.txt');
   }
 
   Future createTestProjects(Project project) async {
@@ -87,7 +92,7 @@ class ProjectCommand extends Command with TemplateHelpers{
       catch_file = "${project.name.snakeCase}/${project.test_dir}/${project.test_include_dir}/fakeit.hpp";
       createFileFromURL(project, catch_file, catch_url );
       // create catach_main.cpp
-      createFileFromTemplate(project,'${project.name.snakeCase}/${project.test_dir}/${project.test_src_dir}/test_main.cpp', 'test_main.cpp');
+      createFileFromWebTemplate(project,'${project.name.snakeCase}/${project.test_dir}/${project.test_src_dir}/test_main.cpp', 'test_main.cpp');
     }
   }
     
