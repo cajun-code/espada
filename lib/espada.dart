@@ -1,4 +1,5 @@
 import 'package:args/command_runner.dart';
+import 'package:espada/commands/header_command.dart';
 import './commands/project_command.dart';
 import './commands/class_command.dart';
 
@@ -8,6 +9,7 @@ class Espada{
     var runner = CommandRunner('espada', 'Tools for C++ Development');
     runner.addCommand(ProjectCommand());
     runner.addCommand(ClassCommand());
+    runner.addCommand(HeaderCommand());
     runner.run(args);
   }
 }

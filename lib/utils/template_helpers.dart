@@ -53,7 +53,7 @@ void createFromTemplate(Map<String, dynamic> params, String file_name, String te
 // https://raw.githubusercontent.com/cajun-code/espada/master/templates/
 void createFromWebTemplate(Map<String, dynamic> params, String file_name, String template_name) async{
   var url = 'https://raw.githubusercontent.com/cajun-code/espada/master/templates/${template_name}';
-  http.get(url).then((response) async{
+  await http.get(url).then((response) async{
     print('Creating ${file_name}');
     var template = Template(response.body);
     await File(file_name).writeAsStringSync(template.renderString(params));

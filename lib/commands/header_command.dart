@@ -3,6 +3,7 @@ import 'package:args/command_runner.dart';
 import 'package:espada/utils/exceptions.dart';
 import 'package:espada/utils/project_helpers.dart';
 import 'package:espada/utils/template_helpers.dart';
+import 'package:recase/recase.dart';
 
 class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
   @override
@@ -37,9 +38,9 @@ class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
       params['f_name'] = name.snakeCase;
       params['class_name'] = name.pascalCase;  
       if(argResults['delete']){
-        print("Deleting class ${params['class_name']}");
+        print("Deleting header ${params['class_name']}");
       }else{    
-        print("Creating class ${params['class_name']}");
+        print("Creating header ${params['class_name']}");
       }
       // create header file
       params['ext'] = 'h';
@@ -53,7 +54,7 @@ class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
         // save project file
       await saveProject();
       // regenerate cmake
-      createFileFromTemplate(project,'CMakeLists.txt', 'cmakelist.txt');
+      await createFileFromTemplate(project,'CMakeLists.txt', 'cmakelist.txt');
     
     }
     on NotAProjectExcpetion catch(e){
