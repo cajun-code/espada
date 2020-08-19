@@ -1,0 +1,4 @@
+rule d2exe 
+    command = dart2native $in -o $out
+
+build espada: d2exe bin/espada.dart 
