@@ -5,30 +5,33 @@ import 'package:espada/utils/project_helpers.dart';
 import 'package:espada/utils/template_helpers.dart';
 import 'package:recase/recase.dart';
 
-class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
+class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers {
   @override
   String get description => 'Create a header file ';
 
   @override
   String get name => 'header';
 
-  HeaderCommand(){
-    argParser.addOption('name',abbr: 'n', help: 'Name of the class to create');
-    argParser.addFlag('delete', abbr: 'd', help: 'Delete files created by this gnerator', defaultsTo: false);
+  HeaderCommand() {
+    argParser.addOption('name', abbr: 'n', help: 'Name of the class to create');
+    argParser.addFlag('delete',
+        abbr: 'd',
+        help: 'Delete files created by this gnerator',
+        defaultsTo: false);
   }
 
   @override
-  void run() async{
-    // check if projet 
+  void run() async {
+    // check if projet
     // load project
-    try{
+    try {
       await loadProject();
       Map<String, dynamic> params = {};
       String name = argResults['name'];
-      if (name == null){
-        if(argResults.rest.isNotEmpty){
+      if (name == null) {
+        if (argResults.rest.isNotEmpty) {
           name = argResults.rest[0];
-        }else{
+        } else {
           print('Name is a required field');
           return;
         }
@@ -36,30 +39,29 @@ class HeaderCommand extends Command with TemplateHelpers, ProjedctHelpers{
       params['date_created'] = DateTime.now();
       params['user_created'] = Platform.environment['USER'];
       params['f_name'] = name.snakeCase;
-      params['class_name'] = name.pascalCase;  
-      if(argResults['delete']){
+      params['class_name'] = name.pascalCase;
+      if (argResults['delete']) {
         print("Deleting header ${params['class_name']}");
-      }else{    
+      } else {
         print("Creating header ${params['class_name']}");
       }
       // create header file
       params['ext'] = 'h';
-      var header_path = '${project.include_dir}/${params['f_name']}.${params['ext']}';
-      if(argResults['delete']){
+      var header_path =
+          '${project.include_dir}/${params['f_name']}.${params['ext']}';
+      if (argResults['delete']) {
         await deleteFileFromProject(project, header_path);
-      }else{
+      } else {
         await createFromWebTemplate(params, header_path, 'file_header.h');
         project.header_files.add(header_path);
       }
-        // save project file
+      // save project file
       await saveProject();
       // regenerate cmake
-      await createFileFromTemplate(project,'CMakeLists.txt', 'cmakelist.txt');
-    
-    }
-    on NotAProjectExcpetion catch(e){
+      await createFileFromWebTemplate(
+          project, 'CMakeLists.txt', 'cmakelist.txt');
+    } on NotAProjectExcpetion catch (e) {
       print(e.errMsg());
     }
-    
   }
 }

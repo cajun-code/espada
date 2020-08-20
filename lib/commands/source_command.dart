@@ -58,7 +58,8 @@ class SourceCommand extends Command with TemplateHelpers, ProjedctHelpers {
       // save project file
       await saveProject();
       // regenerate cmake
-      await createFileFromTemplate(project, 'CMakeLists.txt', 'cmakelist.txt');
+      await createFileFromWebTemplate(
+          project, 'CMakeLists.txt', 'cmakelist.txt');
     } on NotAProjectExcpetion catch (e) {
       print(e.errMsg());
     }
