@@ -75,7 +75,7 @@ void _expandParams(Map<String, dynamic> params, Project project) {
     params['project_is_dynamic_lib'] = false;
   } else if (project.project_type.toLowerCase() == 'lib') {
     params['project_is_exe'] = false;
-    params['project_is_staic_lib'] = true;
+    params['project_is_static_lib'] = true;
     params['project_is_dynamic_lib'] = false;
   } else {
     params['project_is_exe'] = false;

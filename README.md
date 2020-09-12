@@ -1,5 +1,7 @@
 # Erebus #
 
+Erebus is a command line tool that creates a C++ project
+
 ## Installing ##
 
 

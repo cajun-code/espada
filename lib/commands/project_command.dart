@@ -92,10 +92,12 @@ class ProjectCommand extends Command with TemplateHelpers {
     var src_dir =
         await Directory("${project.name.snakeCase}/${project.src_dir}")
             .create(recursive: true);
-    // create main.cpp
-    createFileFromWebTemplate(project,
-        '${project.name.snakeCase}/${project.src_dir}/main.cpp', 'main.cpp');
-    project.src_files.add('${project.src_dir}/main.cpp');
+    if (project.project_type == 'exe') {
+      // create main.cpp
+      createFileFromWebTemplate(project,
+          '${project.name.snakeCase}/${project.src_dir}/main.cpp', 'main.cpp');
+      project.src_files.add('${project.src_dir}/main.cpp');
+    }
     await createTestProjects(project);
     // create espada file
     await File('${project.name.snakeCase}/.espada')
