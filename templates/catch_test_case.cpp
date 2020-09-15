@@ -11,8 +11,17 @@
 // FakeIt: https://github.com/eranpeer/FakeIt/wiki/Quickstart
 
 {{class_name}} target;
-TEST_CASE("Define what you are testing", "[{{class_name}}]"){
-
+/* TEST_CASE("Define what you are testing", "[{{class_name}}]"){
+    SECTION( "you Can include Sub Sections" ) {}
     REQUIRE(true);
-}
+} */
+SCENARIO("Define what you are testing", "[{{class_name}}]"){
 
+   GIVEN("I am a developer"){
+       WHEN("I add two numbers"){
+           THEN("I should get the sume of the two numbers"){
+               REQUIRE(2 + 2 == 4);
+           }
+       }
+   }
+}
