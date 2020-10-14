@@ -10,11 +10,15 @@
 // API Reference: https://github.com/philsquared/Catch/blob/master/docs/Readme.md
 // FakeIt: https://github.com/eranpeer/FakeIt/wiki/Quickstart
 
-{{class_name}} target;
-/* TEST_CASE("Define what you are testing", "[{{class_name}}]"){
+{{class_name}} {{f_name}};
+/* 
+// TDD Format 
+TEST_CASE("Define what you are testing", "[{{class_name}}]"){
     SECTION( "you Can include Sub Sections" ) {}
     REQUIRE(true);
 } */
+
+// BDD Format
 SCENARIO("Define what you are testing", "[{{class_name}}]"){
 
    GIVEN("I am a developer"){
