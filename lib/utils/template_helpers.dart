@@ -69,28 +69,17 @@ void createFromWebTemplate(
 void _expandParams(Map<String, dynamic> params, Project project) {
   params['date_created'] = DateTime.now();
   params['user_created'] = Platform.environment['USER'];
-  if (project.project_type.toLowerCase() == 'exe') {
-    params['project_is_exe'] = true;
-    params['project_is_staic_lib'] = false;
-    params['project_is_dynamic_lib'] = false;
-  } else if (project.project_type.toLowerCase() == 'lib') {
-    params['project_is_exe'] = false;
-    params['project_is_static_lib'] = true;
-    params['project_is_dynamic_lib'] = false;
-  } else {
-    params['project_is_exe'] = false;
-    params['project_is_staic_lib'] = false;
-    params['project_is_dynamic_lib'] = true;
-  }
 
-  if (project.testing_framework.toLowerCase() == 'catch') {
-    params['testing_framework_catch'] = true;
-    params['testing_framework_gtest'] = false;
-  } else if (project.testing_framework.toLowerCase() == 'gtest') {
-    params['testing_framework_catch'] = false;
-    params['testing_framework_gtest'] = true;
-  } else {
-    params['testing_framework_catch'] = false;
-    params['testing_framework_gtest'] = false;
-  }
+  // Project Type
+  params['project_is_exe'] = (project.project_type.toLowerCase() == 'exe');
+  params['project_is_static_lib'] =
+      (project.project_type.toLowerCase() == 'lib');
+  params['project_is_dynamic_lib'] =
+      (project.project_type.toLowerCase() == 'dll');
+
+  // Testing Framework
+  params['testing_framework_catch'] =
+      (project.testing_framework.toLowerCase() == 'catch');
+  params['testing_framework_gtest'] =
+      (project.testing_framework.toLowerCase() == 'gtest');
 }
