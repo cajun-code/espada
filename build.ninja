@@ -1,4 +1,4 @@
 rule d2exe 
-    command = dart2native $in -o $out
+    command = dart compile exe $in -o $out
 
 build espada: d2exe bin/espada.dart 
