@@ -1,4 +1,6 @@
 import 'package:args/command_runner.dart';
+import 'package:espada/commands/cmake_command.dart';
+import 'package:espada/commands/cocos_command.dart';
 import 'package:espada/commands/header_command.dart';
 import 'package:espada/commands/source_command.dart';
 import './commands/project_command.dart';
@@ -13,6 +15,8 @@ class Espada {
     runner.addCommand(ClassCommand());
     runner.addCommand(HeaderCommand());
     runner.addCommand(SourceCommand());
+    runner.addCommand(CmakeCommand());
+    runner.addCommand(CocosCommand());
     runner.run(args).catchError((error) {
       print('Espada: v$VERSION');
       runner.printUsage();

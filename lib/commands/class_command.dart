@@ -14,6 +14,10 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers {
   @override
   String get name => 'class';
 
+  String get src_file_name => 'class_body.cpp';
+  String get h_file_name => 'class_header.h';
+  String get test_file_name => 'catch_test_case.cpp';
+
   ClassCommand() {
     argParser.addOption('name', abbr: 'n', help: 'Name of the class to create');
     argParser.addFlag('delete',
@@ -54,7 +58,7 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers {
       if (argResults['delete']) {
         await deleteFileFromProject(project, header_path);
       } else {
-        await createFromWebTemplate(params, header_path, 'class_header.h');
+        await createFromWebTemplate(params, header_path, h_file_name);
         project.header_files.add(header_path);
       }
       // create cpp file
@@ -63,7 +67,7 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers {
       if (argResults['delete']) {
         await deleteFileFromProject(project, src_path);
       } else {
-        await createFromWebTemplate(params, src_path, 'class_body.cpp');
+        await createFromWebTemplate(params, src_path, src_file_name);
         project.src_files.add(src_path);
       }
       // create test file
@@ -73,14 +77,14 @@ class ClassCommand extends Command with TemplateHelpers, ProjedctHelpers {
         if (argResults['delete']) {
           await deleteFileFromProject(project, test_path);
         } else {
-          await createFromWebTemplate(params, test_path, 'catch_test_case.cpp');
+          await createFromWebTemplate(params, test_path, test_file_name);
           project.test_files.add(test_path);
         }
       }
       // save project file
       await saveProject();
       // regenerate cmake
-      createFileFromWebTemplate(project, 'CMakeLists.txt', 'cmakelist.txt');
+      generateCMakeFromWeb(project);
     } on NotAProjectExcpetion catch (e) {
       print(e.errMsg());
     }

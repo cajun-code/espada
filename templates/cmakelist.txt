@@ -5,8 +5,12 @@ project({{name}})
 set(CMAKE_CXX_STANDARD 14)
 
 {{#use_conan}}
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+endif()
 {{/use_conan}}
 set(SRC_FILES 
 {{#src_files}}

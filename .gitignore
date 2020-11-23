@@ -10,3 +10,5 @@ workspace/
 doc/api/
 espada 
 expada.exe
+.DS_Store
+.ninja_log
