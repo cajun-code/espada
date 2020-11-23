@@ -1,4 +1,4 @@
-// {{f_name}}.{{ext}} create by {{user_name}} on {{date_time}}
+// {{f_name}}.cpp create by {{user_created}} on {{date_created}}
 #include "{{f_name}}.h"
 
 Scene* {{class_name}}::createScene(){
