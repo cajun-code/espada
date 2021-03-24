@@ -6,8 +6,8 @@
 #include "fakeit.hpp"
 #include <{{f_name}}.h>
 
-// tutorial: https://github.com/philsquared/Catch/blob/master/docs/tutorial.md
-// API Reference: https://github.com/philsquared/Catch/blob/master/docs/Readme.md
+// tutorial: https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md
+// API Reference: https://github.com/catchorg/Catch2/blob/devel/docs/Readme.md
 // FakeIt: https://github.com/eranpeer/FakeIt/wiki/Quickstart
 
 {{class_name}} {{f_name}};

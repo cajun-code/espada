@@ -106,7 +106,7 @@ class ProjectCommand extends Command with TemplateHelpers {
     // create cmake file
     if (project.use_conan) {
       createFileFromWebTemplate(
-          project, '${project.name.snakeCase}/conanfile.txt', 'conanfile.txt');
+          project, '${project.name.snakeCase}/conanfile.py', 'conanfile.py');
     }
     createFileFromWebTemplate(
         project, '${project.name.snakeCase}/CMakeLists.txt', 'cmakelist.txt');
@@ -127,7 +127,7 @@ class ProjectCommand extends Command with TemplateHelpers {
           .create(recursive: true);
       // download test tools
       var catch_url =
-          'https://raw.githubusercontent.com/catchorg/Catch2/master/single_include/catch2/catch.hpp';
+          'https://raw.githubusercontent.com/catchorg/Catch2/devel/single_include/catch2/catch.hpp';
       var catch_file =
           "${project.name.snakeCase}/${project.test_dir}/${project.test_include_dir}/catch.hpp";
       createFileFromURL(project, catch_file, catch_url);
