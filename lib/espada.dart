@@ -6,7 +6,7 @@ import 'package:espada/commands/source_command.dart';
 import './commands/project_command.dart';
 import './commands/class_command.dart';
 
-const String VERSION = '3.1.0';
+const String VERSION = '3.1.1';
 
 class Espada {
   static void run(List<String> args) {
